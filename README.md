@@ -39,6 +39,21 @@ Hardware usado:
 
 No Arduino IDE, instale o pacote `esp32 by Espressif Systems` e as bibliotecas `U8g2` e `Arduino_GFX_Library`. Para placas compatíveis, use `ESP32C3 Dev Module`, abra `arduino/AMD_BC250_Monitor_Display.ino` e faça o upload.
 
+### Configuração obrigatória: USB CDC On Boot
+
+Antes de gravar o firmware, abra **Tools / Ferramentas** no Arduino IDE e configure:
+
+```text
+Board: ESP32C3 Dev Module
+USB CDC On Boot: Enabled
+```
+
+O **USB CDC On Boot precisa estar em Enabled** neste projeto quando a comunicação com o Linux é feita pela USB nativa do ESP32-C3. Assim, após iniciar o firmware, o ESP32 disponibiliza a interface serial USB usada pelo `stellar_monitor.py`.
+
+Com o CDC habilitado, a porta normalmente aparecerá no Linux em `/dev/ttyACM*` ou através de `/dev/serial/by-id/`. O monitor utiliza `Serial.begin(115200)` e o serviço Linux envia as temperaturas por essa interface.
+
+Se o ESP32 grava normalmente, mas depois o STELLAR Monitor não encontra uma porta serial para enviar os dados, confirme primeiro que **USB CDC On Boot = Enabled** e reinicie a placa.
+
 ## CachyOS / Arch
 
 Instalação automática:
